@@ -1,7 +1,5 @@
 package com.hospital.serviceImpl;
 
-import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +68,7 @@ public class ServiceImplementation implements HospitalService {
 			return new ResponseEntity<>("Patient Registered Successfully...", HttpStatus.OK);
 		} else {
 
-			return new ResponseEntity<>("Contact Already Registered...", HttpStatus.OK);
+			return new ResponseEntity<>("Contact Already Registered...", HttpStatus.ALREADY_REPORTED);
 		}
 	}
 
@@ -93,7 +91,7 @@ public class ServiceImplementation implements HospitalService {
 			hospitalRepository.save(patients);
 			msg = new ResponseEntity<>("Patient Data Updated Successfully... ", HttpStatus.OK);
 		} else {
-			msg = new ResponseEntity<>("Patient Not Exist...", HttpStatus.OK);
+			msg = new ResponseEntity<>("Patient Not Exist...", HttpStatus.NOT_FOUND);
 		}
 		return msg;
 	}
@@ -105,7 +103,7 @@ public class ServiceImplementation implements HospitalService {
 			hospitalRepository.deleteById(id);
 			return new ResponseEntity<>("Patient Data Deleted Successfully... ", HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>("Patient Not Exist... ", HttpStatus.OK);
+			return new ResponseEntity<>("Patient Not Exist... ", HttpStatus.NOT_FOUND);
 		}
 
 	}
@@ -113,19 +111,14 @@ public class ServiceImplementation implements HospitalService {
 	@Override
 	public ResponseEntity<String> sendOtp() {
 		int max = 10000000;
-		int min = 20000000;
+		int min = 99999999;
 		Long a = (long) (Math.random() * (max - min + 1) + min);
 		String msg = "Your OTP is " + a;
+
 		try {
 			Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-			Message message = Message.creator(new PhoneNumber(to), new PhoneNumber(from), msg) // to:to which no you
-																								// want to send sms
-					.setMediaUrl(Arrays.asList(URI.create("https://demo.twilio.com/owl.png"))) // from: twillio given
-																								// phone no
-					.setStatusCallback(URI.create("http://postb.in/1234abcd")) // body : text message
-					.create();
-			System.out.println(message);
-			System.out.println(message.getSid());
+			 Message.creator(new PhoneNumber(to), new PhoneNumber(from), msg).create();
+			 
 			return new ResponseEntity<>("OTP Send Successfully...", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

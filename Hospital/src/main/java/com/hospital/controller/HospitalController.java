@@ -23,7 +23,7 @@ public class HospitalController {
 	private HospitalService hospitalService;
 
 	// Insert Patient Data
-	@PostMapping("/save")
+	@PostMapping("/savePatient")
 	public ResponseEntity<String> savePatient(@RequestBody HospitalDto hospitalDto) {
 		return hospitalService.savePatient(hospitalDto);
 	}
