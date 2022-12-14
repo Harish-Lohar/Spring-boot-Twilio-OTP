@@ -117,8 +117,7 @@ public class ServiceImplementation implements HospitalService {
 
 		try {
 			Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-			 Message.creator(new PhoneNumber(to), new PhoneNumber(from), msg).create();
-			 
+			 Message.creator(new PhoneNumber(to), new PhoneNumber(from), msg).create();		 
 			return new ResponseEntity<>("OTP Send Successfully...", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
